@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salfa's Bazar | Pure Authentic Goodness</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts (Closest match to Organic, Southern Beach, Agron Demo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Quicksand:wght@300;400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class', 
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#047900',
+                            light: '#fbf6e9',
+                            gold: '#e8ba1d',
+                            darkBg: '#0f172a', 
+                            darkCard: '#1e293b' 
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'], 
+                        display: ['Oswald', 'sans-serif'], 
+                        script: ['Satisfy', 'cursive'], 
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #fbf6e9; /* Light mode bg */
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .dark body {
+            background-color: #0f172a; /* Dark mode bg */
+            color: #f1f5f9;
+        }
+
+        /* Typography Helper Classes */
+        .font-agron { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+        .font-organic { font-family: 'Quicksand', sans-serif; }
+        .font-southern { font-family: 'Satisfy', cursive; }
+
+        /* Nav Link Animation */
+        .nav-link { position: relative; transition: color 0.3s ease; }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            bottom: -4px; left: 0; background-color: #e8ba1d; transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link:hover, .nav-link.active { color: #e8ba1d; }
+
+        /* SPA Section Display */
+        .page-section { display: none; }
+        .page-section.active { display: block; animation: fadeIn 0.5s ease-out; }
+
+        /* Image Hover */
+        .img-zoom { transition: transform 0.5s ease; }
+        .group:hover .img-zoom { transform: scale(1.08); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e8ba1d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #047900; }
+    </style>
+</head>
+<body class="font-organic antialiased flex flex-col min-h-screen">
+
+    <!-- Navbar (Added Glass effect for both Light and Dark mode) -->
+    <nav class="fixed w-full z-50 bg-brand-light/90 dark:bg-[#0f172a]/80 backdrop-blur-lg shadow-sm transition-colors duration-300 border-b border-gray-200/50 dark:border-gray-800/50" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 cursor-pointer flex items-center gap-3" onclick="navigateTo('home')">
+                    <!-- Placeholder Logo Image. Change the src to your actual logo URL -->
+                    <img src="images/7.png.png" alt="Salfa's Bazar Logo" class="h-10 w-auto object-contain rounded">
+                    <!-- Title beside logo (hidden on very small screens) -->
+                    <h1 class="font-agron text-2xl md:text-3xl font-bold text-brand-green dark:text-brand-gold tracking-wider hidden sm:block">
+                        Salfa's Bazar
+                    </h1>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <button onclick="navigateTo('home')" class="nav-link active font-semibold text-brand-green dark:text-white">Home</button>
+                    <button onclick="navigateTo('shop')" class="nav-link font-semibold text-brand-green dark:text-white">Shop</button>
+                    <button onclick="navigateTo('read')" class="nav-link font-semibold text-brand-green dark:text-white">Read</button>
+                    <button onclick="navigateTo('contact')" class="nav-link font-semibold text-brand-green dark:text-white">Contact</button>
+                    
+                    <div class="pl-4 border-l border-gray-300 dark:border-gray-600 flex gap-5 items-center">
+                        <!-- Dark Mode Toggle -->
+                        <button id="darkModeToggle" class="text-brand-green dark:text-brand-gold hover:text-brand-gold transition text-xl">
+                            <i class="fa-solid fa-moon dark:hidden"></i>
+                            <i class="fa-solid fa-sun hidden dark:block"></i>
+                        </button>
+                        <button class="text-brand-green dark:text-white hover:text-brand-gold transition relative">
+                            <i class="fa-solid fa-shopping-bag text-xl"></i>
+                            <span class="absolute -top-2 -right-2 bg-brand-gold text-brand-green font-bold text-[10px] rounded-full h-4 w-4 flex items-center justify-center">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <!-- Dark Mode Toggle Mobile -->
+                    <button id="darkModeToggleMobile" class="text-brand-green dark:text-brand-gold text-xl">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-brand-green dark:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-light dark:bg-brand-darkBg border-t border-gray-200 dark:border-gray-800 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
+                <button onclick="navigateTo('home')" class="text-left py-3 border-b border-gray-200 dark:border-gray-700 text-brand-green dark:text-white font-semibold">Home</button>
+                <button onclick="navigateTo('shop')" class="text-left py-3 border-b border-gray-200 dark:border-gray-700 text-brand-green dark:text-white font-semibold">Shop</button>
+                <button onclick="navigateTo('read')" class="text-left py-3 border-b border-gray-200 dark:border-gray-700 text-brand-green dark:text-white font-semibold">Read</button>
+                <button onclick="navigateTo('contact')" class="text-left py-3 text-brand-green dark:text-white font-semibold">Contact</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow pt-20">
+
+        <!-- ================= HOME PAGE ================= -->
+        <section id="home" class="page-section active">
+            <!-- Hero Section -->
+            <div class="relative bg-brand-green dark:bg-gray-900 text-white overflow-hidden min-h-[85vh] flex items-center">
+                <div class="absolute inset-0 z-0">
+                    <img src="https://images.unsplash.com/photo-1579549326296-6e115ccb17cb?auto=format&fit=crop&q=80&w=1920" alt="Dates Background" class="w-full h-full object-cover opacity-20 mix-blend-overlay">
+                    <div class="absolute inset-0 bg-gradient-to-r from-brand-green/95 dark:from-brand-darkBg to-transparent"></div>
+                </div>
+                
+                <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-0 w-full">
+                    <div class="max-w-2xl">
+                        <!-- Dynamic Seasonal Tag (Glass effect enhanced) -->
+                        <div id="seasonal-tag" class="inline-block px-5 py-2 border-2 border-brand-gold rounded-full text-brand-gold font-bold text-sm mb-6 uppercase tracking-wider bg-brand-gold/10 dark:bg-brand-gold/5 backdrop-blur-md">
+                            Ramadan Kareem
+                        </div>
+                        
+                        <!-- Tagline -->
+                        <h2 class="font-southern text-3xl md:text-4xl text-brand-light mb-4">Pure Authentic Goodness</h2>
+                        
+                        <!-- Dynamic Title (Changes on Reload) -->
+                        <h1 class="font-agron text-5xl md:text-7xl font-bold mb-6 leading-tight text-white tracking-wide">
+                            <span id="dynamic-title" class="text-brand-gold">Pure Dates</span> <br>
+                            To Your Doorstep.
+                        </h1>
+                        
+                        <p class="text-lg md:text-xl text-gray-200 dark:text-gray-300 mb-10 font-medium">
+                            Experience the finest imported dates, natural honey, and premium spices. Nourishing your body with authentic Sunnah foods.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="navigateTo('shop')" class="bg-brand-gold hover:bg-yellow-400 text-brand-green px-8 py-4 rounded-md shadow-lg transition-all duration-300 transform hover:-translate-y-1 font-bold flex items-center gap-2 uppercase tracking-wide">
+                                <i class="fa-solid fa-cart-shopping"></i> Shop Now
+                            </button>
+                            <button onclick="navigateTo('read')" class="border-2 border-brand-light hover:border-brand-gold hover:text-brand-gold text-brand-light px-8 py-4 rounded-md transition-all duration-300 font-bold uppercase tracking-wide">
+                                Read
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="bg-brand-light dark:bg-brand-darkCard py-12 border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div class="p-4">
+                            <div class="w-16 h-16 mx-auto bg-brand-green/10 dark:bg-brand-gold/10 text-brand-green dark:text-brand-gold rounded-full flex items-center justify-center text-2xl mb-4">
+                                <i class="fa-solid fa-plane-arrival"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 font-agron text-brand-green dark:text-brand-light">Imported Quality</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Directly sourced from the finest farms globally.</p>
+                        </div>
+                        <div class="p-4">
+                            <div class="w-16 h-16 mx-auto bg-brand-gold/10 text-brand-gold rounded-full flex items-center justify-center text-2xl mb-4">
+                                <i class="fa-solid fa-certificate"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 font-agron text-brand-green dark:text-brand-light">Premium Grade</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Handpicked and carefully sorted for you.</p>
+                        </div>
+                        <div class="p-4">
+                            <div class="w-16 h-16 mx-auto bg-brand-green/10 dark:bg-brand-gold/10 text-brand-green dark:text-brand-gold rounded-full flex items-center justify-center text-2xl mb-4">
+                                <i class="fa-solid fa-truck-fast"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 font-agron text-brand-green dark:text-brand-light">Fast Delivery</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Swift and secure packaging to your doorstep.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Home Page Products Preview -->
+            <div class="py-20 bg-white dark:bg-brand-darkBg transition-colors duration-300">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <span class="font-southern text-brand-gold text-2xl">Bismillah</span>
+                        <h2 class="text-4xl font-bold mt-2 font-agron text-brand-green dark:text-brand-light tracking-wide">Featured Items</h2>
+                        <div class="w-20 h-1 bg-brand-gold mx-auto mt-4 rounded-full"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                        <!-- Preview Product 1 -->
+                        <div class="bg-brand-light dark:bg-brand-darkCard rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700">
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="images/5.png" alt="Ajwa" class="w-full h-full object-cover img-zoom">
+                            </div>
+                            <div class="p-6 text-center">
+                                <h3 class="text-2xl font-bold font-agron text-brand-green dark:text-white mb-2">Al Madinaah Ajwa</h3>
+                                <p class="text-brand-gold font-bold text-xl mb-4">৳ 1499 <span class="text-sm text-gray-500 font-normal">/ kg</span></p>
+                                <button onclick="navigateTo('shop')" class="w-full border-2 border-brand-green dark:border-brand-gold text-brand-green dark:text-brand-gold hover:bg-brand-green hover:text-white dark:hover:bg-brand-gold dark:hover:text-brand-darkBg py-3 rounded-md transition-colors font-bold uppercase text-sm">View in Shop</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Preview Product 2 -->
+                        <div class="bg-brand-light dark:bg-brand-darkCard rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700">
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="images/6.png" alt="Medjool" class="w-full h-full object-cover img-zoom">
+                            </div>
+                            <div class="p-6 text-center">
+                                <h3 class="text-2xl font-bold font-agron text-brand-green dark:text-white mb-2">Royal Medjool Large</h3>
+                                <p class="text-brand-gold font-bold text-xl mb-4">৳ 1799 <span class="text-sm text-gray-500 font-normal">/ kg</span></p>
+                                <button onclick="navigateTo('shop')" class="w-full border-2 border-brand-green dark:border-brand-gold text-brand-green dark:text-brand-gold hover:bg-brand-green hover:text-white dark:hover:bg-brand-gold dark:hover:text-brand-darkBg py-3 rounded-md transition-colors font-bold uppercase text-sm">View in Shop</button>
+                            </div>
+                        </div>
+
+                        <!-- Preview Product 3 -->
+                        <div class="bg-brand-light dark:bg-brand-darkCard rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700">
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="images/7.png" alt="Sukkari" class="w-full h-full object-cover img-zoom">
+                            </div>
+                            <div class="p-6 text-center">
+                                <h3 class="text-2xl font-bold font-agron text-brand-green dark:text-white mb-2">Mixed Size Sukkari</h3>
+                                <p class="text-brand-gold font-bold text-xl mb-4">৳ 800 <span class="text-sm text-gray-500 font-normal">/ kg</span></p>
+                                <button onclick="navigateTo('shop')" class="w-full border-2 border-brand-green dark:border-brand-gold text-brand-green dark:text-brand-gold hover:bg-brand-green hover:text-white dark:hover:bg-brand-gold dark:hover:text-brand-darkBg py-3 rounded-md transition-colors font-bold uppercase text-sm">View in Shop</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Explore All Items Button -->
+                    <div class="text-center">
+                        <button onclick="navigateTo('shop')" class="inline-flex items-center gap-2 bg-brand-green dark:bg-brand-gold text-white dark:text-brand-darkBg px-10 py-4 rounded-full font-bold uppercase tracking-wide hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300">
+                            Explore All Items <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SHOP PAGE ================= -->
+        <section id="shop" class="page-section bg-white dark:bg-brand-darkBg min-h-screen pb-20 transition-colors duration-300">
+            <div class="bg-brand-green dark:bg-gray-900 text-white py-16 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold font-agron mb-2 tracking-wide">Our Shop</h1>
+                <p class="font-southern text-brand-gold text-2xl">Pure Authentic Goodness</p>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- 1. Ajwa -->
+                    <div class="bg-brand-light dark:bg-brand-darkCard rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700 flex flex-col">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="images/5.png" alt="Ajwa Dates" class="w-full h-full object-cover img-zoom">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="text-2xl font-bold font-agron text-brand-green dark:text-white mb-1">Al Madinaah Ajwa</h3>
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3 block">Premium 1KG Pack</span>
+                            
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 flex-grow">Authentic dark, soft, and sweet Ajwa dates imported directly from the blessed city of Madinah.</p>
+                            
+                            <div class="text-3xl font-bold text-brand-gold mb-6">৳ 1499</div>
+
+                            <div class="space-y-3">
+                                <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
+                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                                </button>
+                                <a href="https://wa.me/8801826840500" target="_blank" class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 block text-center uppercase text-sm">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Medjool -->
+                    <div class="bg-brand-light dark:bg-brand-darkCard rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700 flex flex-col">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="images/6.png" alt="Medjool Dates" class="w-full h-full object-cover img-zoom">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="text-2xl font-bold font-agron text-brand-green dark:text-white mb-1">Royal Medjool Large</h3>
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3 block">Premium 1KG Pack</span>
+                            
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 flex-grow">The 'King of Dates'. Extremely large, caramel-like sweetness, and incredibly soft texture.</p>
+                            
+                            <div class="text-3xl font-bold text-brand-gold mb-6">৳ 1799</div>
+
+                            <div class="space-y-3">
+                                <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
+                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                                </button>
+                                <a href="https://wa.me/8801826840500" target="_blank" class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 block text-center uppercase text-sm">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Mariyam -->
+                    <div class="bg-brand-light dark:bg-brand-darkCard rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700 flex flex-col">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="images/8.png" alt="Mariyam Dates" class="w-full h-full object-cover img-zoom">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="text-2xl font-bold font-agron text-brand-green dark:text-white mb-1">Mixed Size Mariyam</h3>
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3 block">1KG Pack</span>
+                            
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 flex-grow">Beautifully elongated, semi-dry dates with a distinctive chewiness and mild sweetness.</p>
+                            
+                            <div class="text-3xl font-bold text-brand-gold mb-6">৳ 800</div>
+
+                            <div class="space-y-3">
+                                <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
+                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                                </button>
+                                <a href="https://wa.me/8801826840500" target="_blank" class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 block text-center uppercase text-sm">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Sukkari -->
+                    <div class="bg-brand-light dark:bg-brand-darkCard rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700 flex flex-col">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="images/7.png" alt="Sukkari Dates" class="w-full h-full object-cover img-zoom">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="text-2xl font-bold font-agron text-brand-green dark:text-white mb-1">Mixed Size Sukkari</h3>
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3 block">1KG Pack</span>
+                            
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 flex-grow">Golden, melt-in-the-mouth sweet dates. The perfect natural replacement for sugary treats.</p>
+                            
+                            <div class="text-3xl font-bold text-brand-gold mb-6">৳ 800</div>
+
+                            <div class="space-y-3">
+                                <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
+                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                                </button>
+                                <a href="https://wa.me/8801826840500" target="_blank" class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 block text-center uppercase text-sm">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Natural Honey (Coming Soon) -->
+                    <div class="bg-brand-light dark:bg-brand-darkCard rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col opacity-75">
+                        <div class="relative h-64 overflow-hidden bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+                            <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+                                <span class="bg-brand-gold text-brand-green font-agron text-xl px-4 py-2 rounded-md transform -rotate-12">Coming Soon</span>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1587049352847-4d4b1ed7a2d6?auto=format&fit=crop&q=80&w=600" alt="Natural Honey" class="w-full h-full object-cover blur-[2px]">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="text-2xl font-bold font-agron text-brand-green dark:text-white mb-1">Natural Pure Honey</h3>
+                            <p class="text-gray-500 text-sm mb-6 flex-grow">Unprocessed, raw honey sourced directly from natural beehives.</p>
+                            <button disabled class="w-full bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 font-bold py-3 rounded-md cursor-not-allowed uppercase text-sm">
+                                Not Available Yet
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 6. Premium Masala (Coming Soon) -->
+                    <div class="bg-brand-light dark:bg-brand-darkCard rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col opacity-75">
+                        <div class="relative h-64 overflow-hidden bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+                            <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+                                <span class="bg-brand-gold text-brand-green font-agron text-xl px-4 py-2 rounded-md transform -rotate-12">Coming Soon</span>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&q=80&w=600" alt="Premium Spices" class="w-full h-full object-cover blur-[2px]">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="text-2xl font-bold font-agron text-brand-green dark:text-white mb-1">Premium Spices (Masala)</h3>
+                            <p class="text-gray-500 text-sm mb-6 flex-grow">Authentic, aromatic spices to bring the true flavor to your cooking.</p>
+                            <button disabled class="w-full bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 font-bold py-3 rounded-md cursor-not-allowed uppercase text-sm">
+                                Not Available Yet
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= READ (BLOG) PAGE ================= -->
+        <section id="read" class="page-section bg-brand-light dark:bg-brand-darkBg pb-20 min-h-screen transition-colors duration-300">
+            <div class="bg-brand-green dark:bg-gray-900 text-white py-16 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold font-agron mb-2 tracking-wide">Read</h1>
+                <p class="font-southern text-brand-gold text-2xl">Wisdom, Health & Sunnah</p>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+                <!-- Blog Grid (10+ real informational posts) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-container">
+                    <!-- Javascript will inject blog posts here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONTACT & REVIEWS PAGE ================= -->
+        <section id="contact" class="page-section bg-white dark:bg-brand-darkBg pb-20 transition-colors duration-300">
+            <div class="bg-brand-green dark:bg-gray-900 text-white py-16 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold font-agron mb-2 tracking-wide">Get in Touch</h1>
+                <p class="font-southern text-brand-gold text-2xl">We value your connection</p>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    
+                    <!-- Contact Info -->
+                    <div class="bg-brand-light dark:bg-brand-darkCard p-8 md:p-10 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700">
+                        <h2 class="text-3xl font-bold font-agron text-brand-green dark:text-brand-light mb-8 border-b-2 border-brand-gold pb-4 inline-block">Contact Details</h2>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-brand-green/10 dark:bg-brand-gold/10 rounded-full flex items-center justify-center text-xl text-brand-green dark:text-brand-gold flex-shrink-0">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 dark:text-gray-100 text-lg">Store Location</h4>
+                                    <p class="text-gray-600 dark:text-gray-400 font-medium mt-1">Rayerbag Shopping Complex,<br>Rayerbag, Kadamtoli, Dhaka.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-brand-green/10 dark:bg-brand-gold/10 rounded-full flex items-center justify-center text-xl text-brand-green dark:text-brand-gold flex-shrink-0">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 dark:text-gray-100 text-lg">Email Us</h4>
+                                    <a href="mailto:salfasbazar@gmail.com" class="text-brand-green dark:text-brand-gold font-medium mt-1 hover:underline">salfasbazar@gmail.com</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-[#25D366]/20 rounded-full flex items-center justify-center text-xl text-[#25D366] flex-shrink-0">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 dark:text-gray-100 text-lg">WhatsApp</h4>
+                                    <a href="https://wa.me/8801826840500" target="_blank" class="text-[#25D366] font-bold mt-1 hover:underline block">+880 1826 840500</a>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Click to chat directly with our team.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review Form -->
+                    <div class="bg-brand-light dark:bg-brand-darkCard p-8 md:p-10 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700">
+                        <h2 class="text-3xl font-bold font-agron text-brand-green dark:text-brand-light mb-8 border-b-2 border-brand-gold pb-4 inline-block">Write a Review</h2>
+                        <form id="reviewForm" onsubmit="submitReview(event)">
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Your Name</label>
+                                    <input type="text" required id="reviewerName" class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-brand-gold outline-none transition-all dark:text-white" placeholder="Enter your name">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Rating</label>
+                                    <select required class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-brand-gold outline-none transition-all dark:text-white">
+                                        <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                                        <option value="4">⭐⭐⭐⭐ Very Good</option>
+                                        <option value="3">⭐⭐⭐ Good</option>
+                                        <option value="2">⭐⭐ Fair</option>
+                                        <option value="1">⭐ Poor</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Your Review</label>
+                                    <textarea rows="4" required id="reviewText" class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-brand-gold outline-none transition-all dark:text-white" placeholder="Share your experience with us..."></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-brand-green dark:bg-brand-gold hover:opacity-90 text-brand-light dark:text-brand-darkBg font-bold py-4 rounded-md transition-opacity uppercase tracking-wide">
+                                    Submit Review
+                                </button>
+                            </div>
+                        </form>
+                        <!-- Success Message -->
+                        <div id="reviewSuccess" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded-md font-bold text-center">
+                            Dhonjobad! Apnar review ti grohon kora hoyeche.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LEGAL PAGES (Dummy Content) ================= -->
+        <section id="privacy" class="page-section bg-white dark:bg-brand-darkBg py-20 min-h-screen">
+            <div class="max-w-4xl mx-auto px-4"><h1 class="text-3xl font-agron font-bold text-brand-green dark:text-white mb-6">Privacy Policy</h1><div class="prose dark:prose-invert text-gray-700 dark:text-gray-300 space-y-4"><p>At Salfa's Bazar, we value your privacy. We collect basic information like name, phone, and address solely for fulfilling your orders.</p><p>We do not share or sell your data to third parties. Our website uses standard security measures to protect your information.</p></div></div>
+        </section>
+        
+        <section id="terms" class="page-section bg-white dark:bg-brand-darkBg py-20 min-h-screen">
+            <div class="max-w-4xl mx-auto px-4"><h1 class="text-3xl font-agron font-bold text-brand-green dark:text-white mb-6">Terms of Service</h1><div class="prose dark:prose-invert text-gray-700 dark:text-gray-300 space-y-4"><p>By using our website, you agree to these terms. Prices are subject to change without notice.</p><p>We strive to provide accurate product descriptions, but natural products may vary slightly in size and color.</p></div></div>
+        </section>
+
+        <section id="shipping" class="page-section bg-white dark:bg-brand-darkBg py-20 min-h-screen">
+            <div class="max-w-4xl mx-auto px-4"><h1 class="text-3xl font-agron font-bold text-brand-green dark:text-white mb-6">Shipping & Returns</h1><div class="prose dark:prose-invert text-gray-700 dark:text-gray-300 space-y-4"><p>We deliver all across Bangladesh. Delivery charges apply based on location.</p><p>If you receive a damaged product, please contact us via WhatsApp within 24 hours of delivery for a replacement or refund.</p></div></div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand-green dark:bg-[#0a1120] text-gray-200 border-t-4 border-brand-gold transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+                <div class="col-span-1 md:col-span-2">
+                    <h2 class="font-agron text-3xl font-bold text-brand-gold mb-4 flex items-center gap-2 tracking-wide">
+                        <img src="https://placehold.co/100x40/047900/FFF?text=LOGO" alt="Logo" class="h-8 w-auto rounded opacity-80"> Salfa's Bazar
+                    </h2>
+                    <p class="font-southern text-xl text-brand-light mb-6">Pure Authentic Goodness.</p>
+                    <p class="text-sm font-medium leading-relaxed mb-8 max-w-md opacity-90">
+                        Nourishing your body with pure, imported Sunnah foods. Directly sourced for premium quality.
+                    </p>
+                    
+                    <!-- Social Links -->
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/salfasbazar" target="_blank" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-gold hover:text-brand-green transition-all text-xl">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/salfasbazar/?hl=en" target="_blank" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-gold hover:text-brand-green transition-all text-xl">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@salfasbazar" target="_blank" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-gold hover:text-brand-green transition-all text-xl">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                        <a href="https://wa.me/8801826840500" target="_blank" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#25D366] hover:text-white transition-all text-xl">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-brand-gold font-bold mb-6 uppercase tracking-wider font-agron text-lg">Quick Links</h4>
+                    <ul class="space-y-3 font-medium">
+                        <li><button onclick="navigateTo('home')" class="hover:text-brand-gold transition">Home</button></li>
+                        <li><button onclick="navigateTo('shop')" class="hover:text-brand-gold transition">Shop Products</button></li>
+                        <li><button onclick="navigateTo('read')" class="hover:text-brand-gold transition">Read</button></li>
+                        <li><button onclick="navigateTo('contact')" class="hover:text-brand-gold transition">Contact Us</button></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-brand-gold font-bold mb-6 uppercase tracking-wider font-agron text-lg">Legal</h4>
+                    <ul class="space-y-3 font-medium">
+                        <li><button onclick="navigateTo('privacy')" class="hover:text-brand-gold transition">Privacy Policy</button></li>
+                        <li><button onclick="navigateTo('terms')" class="hover:text-brand-gold transition">Terms of Service</button></li>
+                        <li><button onclick="navigateTo('shipping')" class="hover:text-brand-gold transition">Shipping & Returns</button></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm font-medium">
+                <p>&copy; 2026 Salfa's Bazar. All rights reserved.</p>
+                <p class="mt-2 md:mt-0 text-brand-gold font-agron tracking-widest uppercase">Premium Sunnah Foods</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Scripts -->
+    <script>
+        // --- 1. Dark Mode Logic ---
+        const html = document.documentElement;
+        const toggleBtnDesk = document.getElementById('darkModeToggle');
+        const toggleBtnMob = document.getElementById('darkModeToggleMobile');
+
+        function setDarkMode(isDark) {
+            if (isDark) {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setDarkMode(true);
+        } else {
+            setDarkMode(false);
+        }
+
+        toggleBtnDesk.addEventListener('click', () => setDarkMode(!html.classList.contains('dark')));
+        toggleBtnMob.addEventListener('click', () => setDarkMode(!html.classList.contains('dark')));
+
+        // --- 2. SPA Navigation ---
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if(targetPage) targetPage.classList.add('active');
+
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll(`button[onclick="navigateTo('${pageId}')"]`).forEach(link => {
+                if(link.classList.contains('nav-link')) link.classList.add('active');
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            const mobileMenu = document.getElementById('mobile-menu');
+            if(!mobileMenu.classList.contains('hidden')) mobileMenu.classList.add('hidden');
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // --- 3. Dynamic Title (Swaps on Reload) ---
+        // Page reload korle array theke random ekta title boshbe.
+        document.addEventListener("DOMContentLoaded", () => {
+            const titles = ["Pure Dates", "Authentic Honey", "Premium Spices", "Natural Goodness"];
+            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+            document.getElementById("dynamic-title").innerText = randomTitle;
+        });
+
+        // --- 4. Dynamic Ramadan Banner ---
+        function checkSeason() {
+            const today = new Date();
+            const month = today.getMonth(); 
+            const tag = document.getElementById('seasonal-tag');
+            if(month === 1 || month === 2) { // Feb & Mar
+                tag.innerText = "Ramadan Kareem";
+            } else {
+                tag.innerText = "Premium Sunnah Foods";
+            }
+        }
+        checkSeason();
+
+        // --- 5. Real Blog Data Integration ---
+        // *******************************************************************
+        // APNI NOTUN BLOG ADD KORTE CHAILE EI ARRAY TE OBJECT ADD KORBEN
+        // Jemon: { title: "Apnar Title", category: "Apnar Category", img: "Image Link", excerpt: "Choto description..." }
+        // *******************************************************************
+        const blogData = [
+            { 
+                title: "Ajwa Dates: The Cure for Poison and Magic", 
+                category: "Sunnah Foods", 
+                img: "https://images.unsplash.com/photo-1579549326296-6e115ccb17cb?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "Prophet Muhammad (PBUH) said: 'He who eats seven Ajwa dates every morning, will not be affected by poison or magic on the day he eats them.' (Sahih Al-Bukhari). Learn the science behind this." 
+            },
+            { 
+                title: "Black Seed (Kalonji): A Cure for Every Disease", 
+                category: "Health & Sunnah", 
+                img: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "Narrated Abu Huraira: I heard Allah's Messenger (PBUH) saying, 'There is healing in black seed for all diseases except death.' Discover the immunity-boosting power of Nigella Sativa." 
+            },
+            { 
+                title: "The Etiquette of Drinking Water", 
+                category: "Islamic Lesson", 
+                img: "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "The Sunnah teaches us to sit down, say Bismillah, and drink in three breaths. Modern science validates that drinking while sitting prevents kidney damage and acid reflux." 
+            },
+            { 
+                title: "Honey: A Healing for Mankind", 
+                category: "Sunnah Foods", 
+                img: "https://images.unsplash.com/photo-1587049352847-4d4b1ed7a2d6?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "Allah says in the Quran (16:69): 'There emerges from their bellies a drink, varying in colors, in which there is healing for people.' Raw honey is the ultimate natural antibiotic." 
+            },
+            { 
+                title: "Olive Oil: The Blessed Tree", 
+                category: "Sunnah Foods", 
+                img: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "The Prophet (PBUH) said: 'Eat olive oil and massage it over your bodies since it is a holy (mubarak) tree.' (Tirmidhi). Explore its benefits for heart health and skin." 
+            },
+            { 
+                title: "Moderation in Eating", 
+                category: "Islamic Lesson", 
+                img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "The Prophet (PBUH) instructed to fill the stomach with one-third food, one-third water, and leave one-third for air. This golden rule is the foundation of modern dietetics." 
+            },
+            { 
+                title: "Fasting on Mondays & Thursdays", 
+                category: "Health & Sunnah", 
+                img: "https://images.unsplash.com/photo-1618335919655-f1559ee5eb48?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "Fasting two days a week is a well-known Sunnah. Today, intermittent fasting is celebrated globally for cellular repair, weight loss, and mental clarity." 
+            },
+            { 
+                title: "Talbinah: Comfort for the Heart", 
+                category: "Sunnah Foods", 
+                img: "https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "Aisha (RA) used to recommend Talbinah (barley broth) for the sick and grieving. She said, 'It soothes the grieving heart and cleanses the ailing heart.' (Sahih Al-Bukhari)." 
+            },
+            { 
+                title: "Miswak: The Ultimate Oral Hygiene", 
+                category: "Health & Sunnah", 
+                img: "https://images.unsplash.com/photo-1606105961732-ca0db15bfdc2?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "The Prophet (PBUH) emphasized the use of the Miswak immensely. It naturally fights plaque, prevents cavities, and purifies the mouth." 
+            },
+            { 
+                title: "Saying Bismillah and Alhamdulilah", 
+                category: "Islamic Lesson", 
+                img: "https://images.unsplash.com/photo-1609142827663-125032d9e6eb?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "Invoking the name of Allah before eating brings Barakah (blessings), and expressing gratitude (Alhamdulilah) afterwards ensures continuous provision." 
+            },
+            { 
+                title: "Figs (At-Teen) in the Quran", 
+                category: "Sunnah Foods", 
+                img: "https://images.unsplash.com/photo-1554521404-58e57820d88b?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "Allah swears by the Fig and the Olive in Surah At-Teen. Figs are highly nutritious, rich in fiber, and excellent for digestive health." 
+            },
+            { 
+                title: "Pomegranate: Fruit of Jannah", 
+                category: "Health & Sunnah", 
+                img: "https://images.unsplash.com/photo-1615486511484-92e172a51e60?auto=format&fit=crop&q=80&w=600", 
+                excerpt: "Mentioned thrice in the Quran, Pomegranates are rich in antioxidants, help reduce inflammation, and are considered a fruit from Paradise." 
+            }
+        ];
+
+        const blogContainer = document.getElementById('blog-container');
+        blogData.forEach(blog => {
+            blogContainer.innerHTML += `
+                <article class="bg-white dark:bg-brand-darkCard rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
+                    <div class="h-48 overflow-hidden">
+                        <img src="${blog.img}" alt="${blog.title}" class="w-full h-full object-cover img-zoom">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-xs text-brand-gold font-bold uppercase tracking-wider mb-2 font-agron">${blog.category}</span>
+                        <h3 class="text-xl font-bold font-agron text-brand-green dark:text-white mb-3">${blog.title}</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-grow font-medium leading-relaxed">${blog.excerpt}</p>
+                        <button class="text-brand-green dark:text-brand-gold font-bold hover:underline self-start uppercase text-sm tracking-wide">Read <i class="fa-solid fa-arrow-right text-xs ml-1"></i></button>
+                    </div>
+                </article>
+            `;
+        });
+
+        // --- 6. Review Form Submission ---
+        function submitReview(event) {
+            event.preventDefault();
+            document.getElementById('reviewForm').reset();
+            const successMsg = document.getElementById('reviewSuccess');
+            successMsg.classList.remove('hidden');
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
