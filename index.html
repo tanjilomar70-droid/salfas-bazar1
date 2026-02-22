@@ -308,10 +308,30 @@
                                 <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
                                     <i class="fa-solid fa-cart-plus"></i> Add to Cart
                                 </button>
-                                <button onclick="orderNow('Al Madinah Ajwa','1499 BDT')"
-class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 uppercase text-sm">
-<i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
-</button>
+                                <div class="space-y-3">
+
+  <input type="text" id="customerName-ajwa"
+  placeholder="Your Name"
+  class="w-full border p-2 rounded-md text-sm">
+
+  <select id="qty-ajwa"
+  class="w-full border p-2 rounded-md text-sm">
+    <option value="1">1 KG</option>
+    <option value="2">2 KG</option>
+    <option value="3">3 KG</option>
+  </select>
+
+  <button onclick="orderNow(
+      'Al Madinah Ajwa',
+      1499,
+      document.getElementById('qty-ajwa').value,
+      document.getElementById('customerName-ajwa').value
+  )"
+  class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors uppercase text-sm">
+  Order via WhatsApp
+  </button>
+
+</div>
                             </div>
                         </div>
                     </div>
@@ -333,10 +353,30 @@ class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5
                                 <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
                                     <i class="fa-solid fa-cart-plus"></i> Add to Cart
                                 </button>
-                                <button onclick="orderNow('Royal Medjool Large','1799 BDT')"
-class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 uppercase text-sm">
-<i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
-</button>
+                                <div class="space-y-3">
+
+  <input type="text" id="customerName-medjool"
+  placeholder="Your Name"
+  class="w-full border p-2 rounded-md text-sm">
+
+  <select id="qty-medjool"
+  class="w-full border p-2 rounded-md text-sm">
+    <option value="1">1 KG</option>
+    <option value="2">2 KG</option>
+    <option value="3">3 KG</option>
+  </select>
+
+  <button onclick="orderNow(
+  'Royal Medjool Large',
+  1799,
+  document.getElementById('qty-medjool').value,
+  document.getElementById('customerName-medjool').value
+)"
+  class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors uppercase text-sm">
+  Order via WhatsApp
+  </button>
+
+</div>
                             </div>
                         </div>
                     </div>
@@ -358,10 +398,30 @@ class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5
                                 <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
                                     <i class="fa-solid fa-cart-plus"></i> Add to Cart
                                 </button>
-                                <button onclick="orderNow('Mixed Size Mariyam','800 BDT')"
-class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 uppercase text-sm">
-<i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
-</button>
+                                <div class="space-y-3">
+
+  <input type="text" id="customerName-mariyam"
+  placeholder="Your Name"
+  class="w-full border p-2 rounded-md text-sm">
+
+  <select id="qty-mariyam"
+  class="w-full border p-2 rounded-md text-sm">
+    <option value="1">1 KG</option>
+    <option value="2">2 KG</option>
+    <option value="3">3 KG</option>
+  </select>
+
+  <button onclick="orderNow(
+      'Mixed Size Mariyam',
+      800,
+      document.getElementById('qty-mariyam').value,
+      document.getElementById('customerName-mariyam').value
+  )"
+  class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors uppercase text-sm">
+  Order via WhatsApp
+  </button>
+
+</div>
                             </div>
                         </div>
                     </div>
@@ -383,10 +443,29 @@ class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5
                                 <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
                                     <i class="fa-solid fa-cart-plus"></i> Add to Cart
                                 </button>
-                                <button onclick="orderNow('Mixed Size Sukkari','800 BDT')"
-class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 uppercase text-sm">
-<i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
-</button>
+                                <div class="space-y-3">
+
+  <input type="text" id="customerName-sukkari"
+  placeholder="Your Name"
+  class="w-full border p-2 rounded-md text-sm">
+
+  <select id="qty-sukkari"
+  class="w-full border p-2 rounded-md text-sm">
+    <option value="1">1 KG</option>
+    <option value="2">2 KG</option>
+    <option value="3">3 KG</option>
+  </select>
+
+  <button onclick="orderNow(
+      'Mixed Size Sukkari',
+      800,
+      document.getElementById('qty-sukkari').value,
+      document.getElementById('customerName-sukkari').value
+  )"
+  class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors uppercase text-sm">
+  Order via WhatsApp
+  </button>
+</div>
                             </div>
                         </div>
                     </div>
@@ -782,14 +861,26 @@ class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5
         }
     </script>
     <script>
-function orderNow(product, price) {
+function orderNow(product, price, qty, customerName) {
 
-    var phone = "8801628640500"; // তোমার নাম্বার
+    var phone = "8801628640500"; // তোমার WhatsApp নাম্বার বসাও
+
+    if(customerName.trim() === "") {
+        alert("Please enter your name");
+        return;
+    }
+
+    var total = price * qty;
 
     var message = "Assalamu Alaikum,%0A%0A"
+        + "Customer Name: " + customerName + "%0A%0A"
         + "I want to order:%0A"
         + "Product: " + product + "%0A"
-        + "Price: " + price + "%0A%0A"
+        + "Price per KG: " + price + " BDT%0A"
+        + "Quantity: " + qty + " KG%0A"
+        + "Subtotal: " + total + " BDT%0A"
+        + "Delivery Charge: Based on location & quantity%0A"
+        + "Payment Method: Cash on Delivery%0A%0A"
         + "Please confirm availability.";
 
     var url = "https://wa.me/" + phone + "?text=" + message;
