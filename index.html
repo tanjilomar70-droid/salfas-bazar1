@@ -308,9 +308,10 @@
                                 <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
                                     <i class="fa-solid fa-cart-plus"></i> Add to Cart
                                 </button>
-                                <a href="https://wa.me/8801826840500" target="_blank" class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 block text-center uppercase text-sm">
-                                    <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
-                                </a>
+                                <button onclick="orderNow('Al Madinah Ajwa','1499 BDT')"
+class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 uppercase text-sm">
+<i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
+</button>
                             </div>
                         </div>
                     </div>
@@ -332,9 +333,10 @@
                                 <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
                                     <i class="fa-solid fa-cart-plus"></i> Add to Cart
                                 </button>
-                                <a href="https://wa.me/8801826840500" target="_blank" class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 block text-center uppercase text-sm">
-                                    <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
-                                </a>
+                                <button onclick="orderNow('Royal Medjool Large','1799 BDT')"
+class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 uppercase text-sm">
+<i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
+</button>
                             </div>
                         </div>
                     </div>
@@ -356,9 +358,10 @@
                                 <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
                                     <i class="fa-solid fa-cart-plus"></i> Add to Cart
                                 </button>
-                                <a href="https://wa.me/8801826840500" target="_blank" class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 block text-center uppercase text-sm">
-                                    <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
-                                </a>
+                                <button onclick="orderNow('Mixed Size Mariyam','800 BDT')"
+class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 uppercase text-sm">
+<i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
+</button>
                             </div>
                         </div>
                     </div>
@@ -380,9 +383,10 @@
                                 <button class="w-full bg-brand-green dark:bg-brand-gold text-brand-light dark:text-brand-darkBg font-bold py-3 rounded-md hover:opacity-90 transition-opacity flex justify-center items-center gap-2 uppercase text-sm">
                                     <i class="fa-solid fa-cart-plus"></i> Add to Cart
                                 </button>
-                                <a href="https://wa.me/8801826840500" target="_blank" class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 block text-center uppercase text-sm">
-                                    <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
-                                </a>
+                                <button onclick="orderNow('Mixed Size Sukkari','800 BDT')"
+class="w-full bg-[#25D366] text-white font-bold py-3 rounded-md hover:bg-[#1ebd5a] transition-colors flex justify-center items-center gap-2 uppercase text-sm">
+<i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
+</button>
                             </div>
                         </div>
                     </div>
@@ -777,5 +781,21 @@
             }, 3000);
         }
     </script>
+    <script>
+function orderNow(product, price) {
+
+    var phone = "8801628640500"; // তোমার নাম্বার
+
+    var message = "Assalamu Alaikum,%0A%0A"
+        + "I want to order:%0A"
+        + "Product: " + product + "%0A"
+        + "Price: " + price + "%0A%0A"
+        + "Please confirm availability.";
+
+    var url = "https://wa.me/" + phone + "?text=" + message;
+
+    window.open(url, '_blank');
+}
+</script>
 </body>
 </html>
